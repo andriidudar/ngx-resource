@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { Request, RequestMethod, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ResourceModel } from './ResourceModel';
 import { Resource } from './Resource';

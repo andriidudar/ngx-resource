@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Request, RequestMethod, Response, URLSearchParams } from '@angular/http';
 import { RequestArgs } from '@angular/http/src/interfaces';
-import { Observable } from 'rxjs/Observable';
-import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
-import { Subscriber } from 'rxjs/Subscriber';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/publish';
-import 'rxjs/add/operator/toPromise';
-
+import { ConnectableObservable, Observable, Subscriber, Subscription } from 'rxjs';
 
 import { ResourceGlobalConfig, TGetParamsMappingType } from './ResourceGlobalConfig';
 import { ResourceModel } from './ResourceModel';
@@ -22,6 +13,7 @@ import {
   ResourceResponseMap,
   ResourceResult
 } from './Interfaces';
+import { flatMap, map, publish } from 'rxjs/operators';
 
 
 @Injectable()
@@ -196,7 +188,7 @@ export class Resource {
    * @returns {Observable<any>}
    */
   protected $responseInterceptor(observable: Observable<any>, req: Request, methodOptions?: ResourceActionBase): Observable<any> {
-    return observable.map(res => res._body ? res.json() : null);
+    return observable.pipe(map(res => res._body ? res.json() : null));
   }
 
   // removeTrailingSlash(): boolean {
@@ -313,7 +305,7 @@ export class Resource {
 
     let $observable = Observable.create((subscriber: Subscriber<any>) => {
       shell.mainDeferredSubscriber = subscriber;
-    }).flatMap(() => shell.mainObservable);
+    }).pipe(flatMap(() => shell.mainObservable));
 
 
     const $abortRequest = () => {
@@ -321,7 +313,7 @@ export class Resource {
     };
 
     if (!shell.options.isLazy) {
-      $observable = $observable.publish();
+      $observable = $observable.pipe(publish());
       (<ConnectableObservable<any>>$observable).connect();
     }
 

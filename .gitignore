@@ -7,23 +7,20 @@ manifest.mf
 build.xml
 node_modules/*
 npm-debug.log
-*.js
-!config/*
-!karma.conf.js
-!webpack.config.js
-*.map
-*.d.ts
-!make.js
-!examples/**/*.js
+*.ts
+!*.d.ts
+tests
+examples
+config
+.github
 coverage
-*.metadata.json
-bundles
+!*.metadata.json
+!bundles/*.js
 
 #################
 ## JetBrains
 #################
 .idea
-*.iml
 .project
 .settings
 
@@ -43,4 +40,3 @@ Desktop.ini
 
 # Mac crap
 .DS_Store
-
